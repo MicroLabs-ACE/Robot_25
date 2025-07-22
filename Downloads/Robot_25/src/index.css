@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #FF6B6B;
+  --primary-dark: #FF5252;
+  --primary-light: #FFE3E3;
+  --secondary: #4ECDC4;
+  --secondary-dark: #45B7AF;
+  --secondary-light: #D4F3F0;
+  --success: #4CAF50;
+  --warning: #FFC107;
+  --error: #F44336;
+  --background-light: #FFFFFF;
+  --background-dark: #121212;
+  --text-light: #2D3436;
+  --text-dark: #F5F5F5;
+}
+
+/* Better font rendering */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1536px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  @apply antialiased text-gray-900 dark:text-gray-100 min-h-screen flex flex-col;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Improved logo text */
+.logo-text {
+  font-weight: 700;
+  background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+/* Enhanced button styles */
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-semibold transition-all duration-200 
+           focus:outline-none focus:ring-2 focus:ring-offset-2
+           active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed
+           text-sm sm:text-base;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary-dark 
+           hover:from-primary-dark hover:to-primary-dark 
+           text-white focus:ring-primary shadow-sm
+           hover:shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-secondary to-secondary-dark
+           hover:from-secondary-dark hover:to-secondary-dark
+           text-white focus:ring-secondary shadow-sm
+           hover:shadow-md;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary text-primary
+           hover:bg-primary hover:text-white
+           focus:ring-primary dark:border-primary-light
+           dark:text-primary-light dark:hover:bg-primary-light
+           dark:hover:text-gray-900;
+  }
+  
+  /* Enhanced card styles */
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md
+           overflow-hidden transition-all duration-200
+           hover:shadow-lg border border-gray-100
+           dark:border-gray-700;
+  }
+  
+  /* Improved form elements */
+  .input {
+    @apply w-full px-4 py-2 border-2 border-gray-300 
+           dark:border-gray-600 rounded-md
+           bg-white dark:bg-gray-700 
+           text-gray-900 dark:text-gray-100
+           focus:outline-none focus:ring-2 
+           focus:ring-primary focus:border-transparent
+           disabled:opacity-70 disabled:cursor-not-allowed
+           placeholder:text-gray-400 dark:placeholder:text-gray-500;
+  }
+  
+  .label {
+    @apply block text-sm font-medium text-gray-700 
+           dark:text-gray-300 mb-1;
+  }
+
+  /* Responsive grid layouts */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 
+           xl:grid-cols-4 gap-4 sm:gap-6;
+  }
+
+  /* Responsive container padding */
+  .container-responsive {
+    @apply px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl;
+  }
+
+  /* Responsive text sizes */
+  .text-responsive {
+    @apply text-base sm:text-lg lg:text-xl;
+  }
+
+  .heading-responsive {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold;
+  }
+}
+
+/* Animation classes */
+.menu-item-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.menu-item-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Status indicators */
+.order-status-pending {
+  @apply bg-yellow-100 text-yellow-800 
+         dark:bg-yellow-900 dark:text-yellow-100
+         font-medium px-2 py-1 rounded-full text-xs;
+}
+
+.order-status-preparing {
+  @apply bg-blue-100 text-blue-800 
+         dark:bg-blue-900 dark:text-blue-100
+         font-medium px-2 py-1 rounded-full text-xs;
+}
+
+.order-status-delivered {
+  @apply bg-green-100 text-green-800 
+         dark:bg-green-900 dark:text-green-100
+         font-medium px-2 py-1 rounded-full text-xs;
+}
+
+/* Better scrollbar */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .btn:hover {
+    @apply transform-none shadow-none;
+  }
+  
+  .card:hover {
+    @apply transform-none shadow-md;
+  }
+}
