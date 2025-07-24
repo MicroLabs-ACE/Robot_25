@@ -1,21 +1,32 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import { ref, set, get } from 'firebase/database';
-import { auth, database } from '../firebase/config';
-import { toast } from 'react-toastify';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { ref, set, get } from "firebase/database";
+import { auth, database } from "../firebase/config";
+import { toast } from "react-toastify";
 
 interface UserData {
   uid: string;
   email: string;
   name: string;
-  role: 'customer' | 'chef';
+  role: "customer" | "chef";
   phoneNumber?: string;
 }
 
 interface AuthContextType {
   user: UserData | null;
   isLoading: boolean;
-  register: (email: string, password: string, name: string, role: 'customer' | 'chef', phoneNumber?: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    name: string,
+    role: "customer" | "chef",
+    phoneNumber?: string
+  ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isChef: boolean;
@@ -25,7 +36,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isChef, setIsChef] = useState(false);
@@ -46,10 +59,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             email: firebaseUser.email!,
             name: userData.name,
             role: userData.role,
-            phoneNumber: userData.phoneNumber
+            phoneNumber: userData.phoneNumber,
           });
           // Set isChef based on role
-          setIsChef(userData.role === 'chef');
+          setIsChef(userData.role === "chef");
         }
       } else {
         setUser(null);
@@ -61,40 +74,56 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => unsubscribe();
   }, []);
 
-  const register = async (email: string, password: string, name: string, role: 'customer' | 'chef', phoneNumber?: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    name: string,
+    role: "customer" | "chef",
+    phoneNumber?: string
+  ) => {
     try {
-      const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
-      
+      const { user: firebaseUser } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
       // Store additional user data in the database
       const userData = {
         email,
         name,
         role,
         phoneNumber,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
-      
+
       await set(ref(database, `users/${firebaseUser.uid}`), userData);
-      
+
       setUser({
         uid: firebaseUser.uid,
         email: firebaseUser.email!,
         name,
         role,
-        phoneNumber
+        phoneNumber,
       });
-      
-      toast.success('Registration successful!');
-    } catch (error: any) {
-      console.error('Registration error:', error);
-      toast.error(error.message || 'Failed to register');
+
+      toast.success("Registration successful!");
+    } catch (error: unknown) {
+      console.error("Registration error:", error);
+      const message =
+        error instanceof Error ? error.message : "Failed to register";
+      toast.error(message);
       throw error;
     }
   };
 
   const login = async (email: string, password: string) => {
     try {
-      const { user: firebaseUser } = await signInWithEmailAndPassword(auth, email, password);
+      const { user: firebaseUser } = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
       // Fetch user data from the database
       const userRef = ref(database, `users/${firebaseUser.uid}`);
@@ -107,15 +136,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           email: firebaseUser.email!,
           name: userData.name,
           role: userData.role,
-          phoneNumber: userData.phoneNumber
+          phoneNumber: userData.phoneNumber,
         });
         // Set isChef based on role
-        setIsChef(userData.role === 'chef');
-        toast.success('Login successful!');
+        setIsChef(userData.role === "chef");
+        toast.success("Login successful!");
       }
-    } catch (error: any) {
-      console.error('Login error:', error);
-      toast.error(error.message || 'Failed to login');
+    } catch (error: unknown) {
+      console.error("Login error:", error);
+      const message =
+        error instanceof Error ? error.message : "Failed to login";
+      toast.error(message);
       throw error;
     }
   };
@@ -124,16 +155,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await signOut(auth);
       setUser(null);
-      toast.success('Logged out successfully');
-    } catch (error: any) {
-      console.error('Logout error:', error);
-      toast.error(error.message || 'Failed to logout');
+      toast.success("Logged out successfully");
+    } catch (error: unknown) {
+      console.error("Logout error:", error);
+      const message =
+        error instanceof Error ? error.message : "Failed to logout";
+      toast.error(message);
       throw error;
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, register, login, logout, isChef, setIsChef, isAuthenticated }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        register,
+        login,
+        logout,
+        isChef,
+        setIsChef,
+        isAuthenticated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -142,8 +186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
-

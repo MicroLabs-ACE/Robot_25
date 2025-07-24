@@ -11,17 +11,13 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     if (!user) {
       navigate('/auth');
-    } else if (user.role === 'chef') {
-      navigate('/chef/dashboard');
-    } else if (user.role === 'customer') {
-      navigate('/menu');
     }
   }, [user, navigate]);
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-orange-500 to-red-600 text-white py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-r from-orange-500 to-red-600 text-white flex justify-center items-center py-24 overflow-hidden h-[80vh]">
         <div className="absolute inset-0 opacity-20 bg-[url('https://images.pexels.com/photos/6267/menu-restaurant-vintage-table.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
