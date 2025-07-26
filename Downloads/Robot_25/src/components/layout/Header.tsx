@@ -15,23 +15,15 @@ const Header: React.FC = () => {
   return (
     <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2">
           <ChefHat size={28} className="text-orange-500" />
           <span className="text-2xl font-bold logo-text">OAK-Cafeteria</span>
-        </Link>
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link
-            to={
-              !user
-                ? "/"
-                : user.role === "chef"
-                ? "/chef/dashboard"
-                : user.role === "customer"
-                ? "/menu"
-                : "/"
-            }
+            to="/"
             className={`font-medium transition-colors ${
               isActive("/")
                 ? "text-orange-500 dark:text-orange-400"
