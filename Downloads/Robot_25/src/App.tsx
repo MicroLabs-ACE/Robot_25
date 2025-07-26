@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Header from './components/layout/Header';
